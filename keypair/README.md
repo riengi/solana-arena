@@ -1,0 +1,2 @@
+# Solana keypairs
+Keypair are cryptography pair of private (secret) key and public key used for signing transactions and other Solana operations requiring cryptographical authentication and authorization. 
