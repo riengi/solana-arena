@@ -50,10 +50,13 @@ console.log(keypairFromFile.publicKey.toString());
 console.log(keypairFromFile.secretKey);
 
 
-// Generating keypair from seed (still fuzzy)
+// Generating keypair from derived seed
 // import { derivePath } from 'ed25519-hd-key';
 
 const mnemonic ="photo pulse armor must ticket present dynamic fortune game refuse naive street"
+console.log('Mnemonic validation', bip39.validateMnemonic(mnemonic));
+
+
 const seed = bip39.mnemonicToSeedSync(mnemonic)
 const seedBuffer = Buffer.from(seed).toString('hex');
 
@@ -76,3 +79,14 @@ console.log('From seed:')
 console.log(keypairFromSeed.publicKey);
 console.log(keypairFromSeed.publicKey.toString());
 console.log(keypairFromSeed.secretKey);
+
+
+// Generating from seed 
+
+console.log(bip39.validateMnemonic(mnemonic)) // true
+bip39.mnemonicToSeed(mnemonic).then(buffer => {
+    let a = new Uint8Array(buffer.toJSON().data.slice(0,32));
+    const key = Keypair.fromSeed(a);
+    console.log('Public key:', key.publicKey.toString());
+}).catch(err => console.log(err))
+
