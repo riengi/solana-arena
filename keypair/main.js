@@ -15,6 +15,7 @@ const { Buffer } = require('buffer');
 const { derivePath } = require('ed25519-hd-key');
 const fs = require('fs');
 const bip39 = require('bip39');
+const bs58 = require('bs58')
 
 // generate new keypair
 const myKeypair = Keypair.generate();
@@ -28,6 +29,7 @@ console.log("Len :" + myKeypair.publicKey.toString().length);
 console.log('-'.repeat(70))
 console.log("Secret key    :", myKeypair.secretKey);
 console.log("Secret key len:" + myKeypair.secretKey.length);
+console.log("Secret key bs58", bs58.encode(myKeypair.secretKey));
     
 console.log('-'.repeat(70))
 // read generated key from file (sync) created with solana-keygen new -o example-keygen.json
