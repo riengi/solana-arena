@@ -13,6 +13,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "account"
+version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "solana-client",
+ "solana-sdk",
+ "spl-token",
+]
+
+[[package]]
 name = "adler"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3186,17 +3196,6 @@ dependencies = [
  "spl-memo",
  "spl-token",
  "thiserror",
-]
-
-[[package]]
-name = "spl_token"
-version = "0.1.0"
-dependencies = [
- "dotenv",
- "solana-client",
- "solana-sdk",
- "spl-associated-token-account",
- "spl-token",
 ]
 
 [[package]]

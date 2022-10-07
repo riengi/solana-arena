@@ -1,30 +1,30 @@
 use solana_client::rpc_client::RpcClient;
-use solana_sdk::signer::{keypair::Keypair, Signer};
+use solana_sdk::pubkey::Pubkey;
 
-const LAMPORT2SOL: u64 = 1_000_000_000;
+// const LAMPORT2SOL: u64 = 1_000_000_000;
 
 fn main() {
-    let singer_keypair = dotenv::var("signer_keypair").expect("Cannot get .env signer keypair");
-    println!("{}", singer_keypair);
+    // .env (get account_pk and token_id)
+    let account = dotenv::var("account_pk").unwrap();
+    let token_id = dotenv::var("token_id").unwrap();
+
+    // convert it to Pubkey
+    let account_pk: Pubkey = account.parse().unwrap();
+    let token_id_pk: Pubkey = token_id.parse().unwrap();
+
+    // Initialize RPC client
     let url = dotenv::var("rpc_url").expect("rpc_url not found");
     println!("{}", url);
-
-    let singer_wallet = Keypair::from_base58_string(&singer_keypair);
-
-    println!("{:?}", singer_wallet);
-    println!("{:?}", singer_wallet.pubkey());
-
     let client = RpcClient::new(url);
-    let balance = client.get_balance(&singer_wallet.pubkey()).unwrap();
 
-    let account = client.get_account(&singer_wallet.pubkey()).unwrap();
-    println!("{:?}", account);
-    println!("Lamports: {}", account.lamports);
-    println!("Data lenght: {}", account.data.len());
-    println!("Owner:{}", account.owner);
+    // Get associated token address
+    let associated_token_address =
+        spl_associated_token_account::get_associated_token_address(&account_pk, &token_id_pk);
+    println!("Token account address: {:?}", associated_token_address);
 
-    println!("Rent epoch:{}", account.rent_epoch);
-
-    let sol = balance / LAMPORT2SOL;
-    println!("Balance: {} SOL", sol);
+    // Get balance of associated token account
+    let balance = client
+        .get_token_account_balance(&associated_token_address)
+        .unwrap();
+    println!("Token amount: {:?}", balance);
 }
